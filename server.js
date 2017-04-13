@@ -31,6 +31,22 @@ app.get('/api/items',(request,response)=>{
   response.json(items)
 })
 
+app.post('/api/items', (request, response)=>{
+  const newItem = {
+    id:md5(request.body.name),
+    name:request.body.name,
+    reason:request.body.reason,
+    cleanliness:request.body.cleanliness
+  }
+  if(!request.body.name){
+    response.status(404).send({
+      error: 'No Item Added'
+    })
+  }
+  app.locals.items.push(newItem)
+  response.status(200).json(app.locals.items)
+})
+
 
 app.listen(app.get('port'), ()=>{
   console.log(`${app.locals.title} is running at ${app.get('port')}`)
