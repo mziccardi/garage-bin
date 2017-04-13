@@ -18,7 +18,11 @@ $('.submit').on('click',(e)=>{
 const createItem = (newItem)=>{
   axios.post('/api/items', newItem)
   .then((response)=>{
-    console.log(response.data);
+    $('.item-list').empty()
+    response.data.map((item)=>{
+      console.log(item.name)
+      $('.item-list').append(`<li>${item.name} ${item.reason} ${item.cleanliness}</li>`)
+    })
   })
 }
 
