@@ -1,0 +1,18 @@
+.garage-door{
+  background-color: red;
+}
+.items-card{
+  background-color:DIMGREY;
+  color: white;
+  text-align: center;
+  margin: 10px;
+  padding:10px;
+  border-style: solid;
+  border-width: medium;
+}
+.item-count{
+  display: inline-block;
+}
+.sparkle-count{
+  display: inline-block;
+}
