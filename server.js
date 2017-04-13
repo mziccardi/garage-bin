@@ -9,7 +9,7 @@ const environment = process.env.NODE_ENV || 'development';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.set('port', process.env.PORT || 3000)
+app.set('port', process.env.PORT || 8080)
 app.use(express.static('public'))
 
 app.locals.title = 'Garage-Bin'
@@ -29,6 +29,16 @@ app.get('/', (request, response)=>{
 app.get('/api/items',(request,response)=>{
   const items = app.locals.items
   response.json(items)
+})
+
+app.get('/api/items/:id', (request,response)=>{
+  const { id } = request.params
+  const item = app.locals.items.filter((item)=>{
+    if(item.id === id){
+      return item
+    }
+  })
+  response.status(200).json(item)
 })
 
 app.post('/api/items', (request, response)=>{

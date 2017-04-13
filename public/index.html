@@ -3,14 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>Garage-bin</title>
+     <link rel="stylesheet" type="text/css" href="styles.css"/>
   </head>
   <body>
     <h2>GARAGEBIN</h2>
+    <button class='garage-door'>Garage Door</button>
+    <div class='garage'>
     <form>
       <label>Name <input type='text' id='name' class='name-input' /></label>
       <label>Reason for Storage <input type='text' id='reason' class='reason-input' /></label>
       <label> Cleanliness
-        <!-- <input type='text' id='cleanliness' placeholder='sparkling, dusty, rancid' /> -->
         <select id='clean' name='cleanliness'>
           <option value='sparkling'>sparkling</option>
           <option value='dusty'>dusty</option>
@@ -19,6 +21,7 @@
       </label>
       <button class='submit' type='submit'>Add to Garage</button>
     </form>
+    <button class='sort'>Sort by Name</button>
     <div class='all-counts'>
       <div class='item-count'>Total number of items: 0</div>
       <div class='sparkle-count'> Number of sparkling items: 0</div>
@@ -26,7 +29,7 @@
       <div class='rancid-count'> Number of rancid items: 0</div>
     </div>
     <ul class='item-list'></ul>
-    <ul class='sorted-list'></ul>
+  </div>
 
     <button class='test'>test</button>
 

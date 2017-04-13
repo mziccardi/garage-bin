@@ -25,10 +25,7 @@ $('.submit').on('click',(e)=>{
 const createItem = (newItem)=>{
   axios.post('/api/items', newItem)
   .then((response)=>{
-    $('.item-list').empty()
-    response.data.map((item)=>{
-      $('.item-list').append(`<li> Name: ${item.name} <br/> Reason:  ${item.reason} <br/> Cleanliness: ${item.cleanliness}</li>`)
-    })
+    appendHelper(response.data)
   })
   clearInputs()
 }
@@ -36,14 +33,18 @@ const createItem = (newItem)=>{
 const addItems = ()=>{
   axios.get('/api/items')
   .then((response)=>{
-    $('.item-list').empty()
-    response.data.map((item)=>{
-      $('.item-list').append(`<li class='item-name'> Name: ${item.name} <br/> Reason:  ${item.reason} <br/> Cleanliness: ${item.cleanliness}</li>`)
-    })
+    appendHelper(response.data)
   })
 }
 
-
+ const appendHelper = (items)=>{
+   $('.item-list').empty();
+	items.map((item) => {
+		$('.item-list').append(`
+			<li id=${item.id} class='items-card'>Item: ${item.name}<br/> Reason: ${item.reason}<br/> Cleanliness: ${item.cleanliness}</li>
+			`);
+ })
+}
 
 const clearInputs = ()=>{
   $('.name-input').val('')
@@ -89,11 +90,9 @@ const sortByName = ()=>{
   axios.get('/api/items')
   .then((response)=>{
     let allItems = response.data
-    sortHelper(allItems)
+    let sorted =  sortHelper(allItems)
     console.log(allItems);
-    allItems.map((item)=>{
-      $('.sorted-list').append(`<li>${item.name}</li>`)
-    })
+    appendHelper(sorted)
   })
 }
 
@@ -105,6 +104,7 @@ const sortHelper = (allItems)=>{
     if(nameA > nameB) return 1
     return 0
   })
+  return sorted
 }
 
 const countSparkleHelper = (allItems)=>{
@@ -135,8 +135,10 @@ const countRancidHelper = (allItems)=>{
   return count
 }
 
-$('.test').on('click',(e)=>{
-  $('.item-list').hide()
+$('.garage-door').on('click',(e)=>{
+  $('.garage').toggle()
+})
+$('.sort').on('click',(e)=>{
   sortByName()
 })
 
