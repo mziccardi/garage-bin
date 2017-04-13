@@ -5,6 +5,7 @@ const cleanliness = $('#clean')
 
 $(document).ready(()=>{
   addItems()
+  countItems()
 })
 
 
@@ -16,6 +17,7 @@ $('.submit').on('click',(e)=>{
     cleanliness:cleanliness.find(":selected").val()
   }
   createItem(newItem)
+  countItems()
 })
 
 
@@ -43,12 +45,43 @@ const addItems = ()=>{
   })
 }
 
+
 const clearInputs = ()=>{
   $('.name-input').val('')
   $('.reason-input').val('')
 }
 
+const countItems = ()=>{
+  axios.get('/api/items')
+  .then((response)=>{
+    $('.item-count').html(`Total number of items: ${response.data.length}`)
+  })
+}
 
+const countSparklingItems = ()=>{
+  axios.get('/api/items')
+  .then((response)=>{
+    let allItems= response.data
+    console.log(allItems);
+    let counter = countSparkleHelper(allItems)
+    $('.sparkle-count').html(`Number of sparkling items: ${counter}`)
+  })
+
+}
+
+const countSparkleHelper = (allItems)=>{
+  let count = 0
+  for(let i=0; i<allItems.length; i++){
+    if(allItems[i].cleanliness === 'sparkling'){
+      count++
+    }
+  }
+  return count
+}
+
+$('.test').on('click',(e)=>{
+  countSparklingItems()
+})
 
 // $('.submit').on('click',(e)=>{
 //   e.preventDefault()
