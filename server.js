@@ -10,8 +10,42 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.set('port', process.env.PORT || 3000)
-app.locals.title = 'Garage-Bin'
+app.use(express.static('public'))
 
+app.locals.title = 'Garage-Bin'
+app.locals.items = [{
+  id:1,
+  name: 'car',
+  reason: 'parked',
+  cleanliness:'sparkling'
+}]
+
+app.get('/', (request, response)=>{
+  fs.readFile(`${__dirname}/index.html`,(err,file)=>{
+    response.send(file)
+  })
+})
+
+app.get('/api/items',(request,response)=>{
+  const items = app.locals.items
+  response.json(items)
+})
+
+app.post('/api/items', (request, response)=>{
+  const newItem = {
+    id:md5(request.body.name),
+    name:request.body.name,
+    reason:request.body.reason,
+    cleanliness:request.body.cleanliness
+  }
+  if(!request.body.name){
+    response.status(404).send({
+      error: 'No Item Added'
+    })
+  }
+  app.locals.items.push(newItem)
+  response.status(200).json(app.locals.items)
+})
 
 
 app.listen(app.get('port'), ()=>{
