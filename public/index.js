@@ -3,6 +3,11 @@ const reason = $('#reason')
 const cleanliness = $('#clean')
 
 
+$(document).ready(()=>{
+  addItems()
+})
+
+
 $('.submit').on('click',(e)=>{
   e.preventDefault()
   const newItem = {
@@ -21,12 +26,27 @@ const createItem = (newItem)=>{
     $('.item-list').empty()
     response.data.map((item)=>{
       console.log(item.name)
-      $('.item-list').append(`<li>${item.name} ${item.reason} ${item.cleanliness}</li>`)
+      $('.item-list').append(`<li> Name: ${item.name} <br/> Reason:  ${item.reason} <br/> Cleanliness: ${item.cleanliness}</li>`)
+    })
+  })
+  clearInputs()
+}
+
+const addItems = ()=>{
+  axios.get('/api/items')
+  .then((response)=>{
+    $('.item-list').empty()
+    response.data.map((item)=>{
+      console.log(item.name)
+      $('.item-list').append(`<li> Name: ${item.name} <br/> Reason:  ${item.reason} <br/> Cleanliness: ${item.cleanliness}</li>`)
     })
   })
 }
 
-
+const clearInputs = ()=>{
+  $('.name-input').val('')
+  $('.reason-input').val('')
+}
 
 
 
