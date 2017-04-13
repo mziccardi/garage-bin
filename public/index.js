@@ -27,7 +27,6 @@ const createItem = (newItem)=>{
   .then((response)=>{
     $('.item-list').empty()
     response.data.map((item)=>{
-      console.log(item.name)
       $('.item-list').append(`<li> Name: ${item.name} <br/> Reason:  ${item.reason} <br/> Cleanliness: ${item.cleanliness}</li>`)
     })
   })
@@ -39,11 +38,11 @@ const addItems = ()=>{
   .then((response)=>{
     $('.item-list').empty()
     response.data.map((item)=>{
-      console.log(item.name)
-      $('.item-list').append(`<li> Name: ${item.name} <br/> Reason:  ${item.reason} <br/> Cleanliness: ${item.cleanliness}</li>`)
+      $('.item-list').append(`<li class='item-name'> Name: ${item.name} <br/> Reason:  ${item.reason} <br/> Cleanliness: ${item.cleanliness}</li>`)
     })
   })
 }
+
 
 
 const clearInputs = ()=>{
@@ -65,31 +64,47 @@ const countSparklingItems = ()=>{
   axios.get('/api/items')
   .then((response)=>{
     let allItems= response.data
-    console.log(allItems);
     let counter = countSparkleHelper(allItems)
     $('.sparkle-count').html(`Number of sparkling items: ${counter}`)
   })
-
 }
 const countDustyItems = ()=>{
   axios.get('/api/items')
   .then((response)=>{
     let allItems= response.data
-    console.log(allItems);
     let counter = countDustyHelper(allItems)
     $('.dusty-count').html(`Number of dusty items: ${counter}`)
   })
-
 }
 const countRancidItems = ()=>{
   axios.get('/api/items')
   .then((response)=>{
     let allItems= response.data
-    console.log(allItems);
     let counter = countRancidHelper(allItems)
-    $('.rancid-count').html(`Number of Rancid items: ${counter}`)
+    $('.rancid-count').html(`Number of rancid items: ${counter}`)
   })
+}
 
+const sortByName = ()=>{
+  axios.get('/api/items')
+  .then((response)=>{
+    let allItems = response.data
+    sortHelper(allItems)
+    console.log(allItems);
+    allItems.map((item)=>{
+      $('.sorted-list').append(`<li>${item.name}</li>`)
+    })
+  })
+}
+
+const sortHelper = (allItems)=>{
+  let sorted = allItems.sort((a,b)=>{
+    let nameA = a.name.toLowerCase()
+    let nameB = b.name.toLowerCase()
+    if(nameA < nameB) return -1
+    if(nameA > nameB) return 1
+    return 0
+  })
 }
 
 const countSparkleHelper = (allItems)=>{
@@ -121,7 +136,8 @@ const countRancidHelper = (allItems)=>{
 }
 
 $('.test').on('click',(e)=>{
-  countSparklingItems()
+  $('.item-list').hide()
+  sortByName()
 })
 
 // $('.submit').on('click',(e)=>{
